@@ -5,13 +5,14 @@ import { ColladaLoader } from 'three/examples/jsm/loaders/ColladaLoader.js';
 import { ref, onMounted, onBeforeUnmount } from 'vue';
 import * as THREE from 'three';
 const canvas = ref(null);
+const test = ref(null);
 var controls = null;
 var clock = new THREE.Clock();
 let scene = null;
 let camera = null;
 let renderer = null;
 let animationId = null;
-
+var height, width;
 
 const initScene = () => {
     scene = new THREE.Scene()
@@ -19,7 +20,7 @@ const initScene = () => {
     camera.position.z = 1
 
     renderer = new THREE.WebGLRenderer({ canvas: canvas.value })
-    renderer.setSize(window.innerWidth, window.innerHeight)
+    renderer.setSize(width, height)
     renderer.setClearColor(0x222222, 1);
     controls = new OrbitControls(camera, renderer.domElement);
     var pointLight = new THREE.PointLight(0xffffff, 1);
@@ -64,6 +65,8 @@ const onClick = () => {
 }
 
 onMounted(() => {
+    width = test.value.clientWidth;
+    height = test.value.clientHeight;
     initScene()
     animate()
 
@@ -77,7 +80,7 @@ onBeforeUnmount(() => {
 </script>
   
 <template>
-    <div>
+    <div ref="test" class="test">
 
         <canvas ref="canvas" />
     </div>
@@ -85,7 +88,12 @@ onBeforeUnmount(() => {
   
 
 
-<style scoped>
+<style lang="scss" scoped>
+.test {
+    height: rem(200);
+    width: rem(200);
+}
+
 /* Ajoutez du style si nécessaire */
 </style>
   
