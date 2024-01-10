@@ -49,6 +49,28 @@ const addMontre = async () => {
 };
 
 onMounted(getMontres);
+
+// Fonction de connexion
+const login = async () => {
+  try {
+    const response = await client.post('/login', { /* Les détails de connexion ici */ });
+    userToken.value = response.data.token;
+    localStorage.setItem('userToken', userToken.value);
+    console.log('Connecté avec succès', response.data);
+  } catch (error) {
+    console.error('Erreur lors de la connexion :', error.message);
+  }
+};
+
+// Fonction de déconnexion
+const logout = () => {
+  userToken.value = null;
+  localStorage.removeItem('userToken');
+  console.log('Déconnecté avec succès');
+};
+
+const userToken = ref(localStorage.getItem('userToken') || null);
+
 </script>
 <template>
   <DefaultLayout>
@@ -101,6 +123,11 @@ onMounted(getMontres);
         <button type="submit">Ajouter</button>
       </form>
     </div>
+    <p v-if="userToken">Utilisateur connecté!</p>
+    <p v-else>Veuillez vous connecter.</p>
+
+    <button v-if="!userToken" @click="login">Se connecter</button>
+    <button v-if="userToken" @click="logout">Se déconnecter</button>
 
 
     <template #footer> Nouveau Footer </template>
