@@ -15,7 +15,6 @@ const client = axios.create({
     baseURL: import.meta.env.VITE_API_URL,
 });
 
-
 const getUtilisateurs = async () => {
     try {
         const response = await client.get('/utilisateurs');
@@ -55,7 +54,6 @@ onMounted(getUtilisateurs);
             </nav>
         </template>
 
-
         <div>
             <h1>Liste des Utilisateurs</h1>
             <ul>
@@ -78,8 +76,8 @@ onMounted(getUtilisateurs);
             </form>
         </div>
 
-        <ConnexionForm />
-
+        <!-- Include the ConnexionForm component -->
+        <ConnexionForm @login="login" />
 
         <template #footer>
         </template>

@@ -11,13 +11,10 @@ const boitiers = ref([]);
 
 const newMontre = ref({
     form_montre: 'carre',
-    id_utilisateur_commande: '',
-    id_utilisateur_enregistrer: '',
+    id_user: '',
     boitier_fond: 'black01',
     bracelet_texture: 'tissus-or',
-    id_heure: '',
-    id_minute: '',
-    id_seconde: '',
+
 });
 
 
@@ -40,6 +37,7 @@ const getMontres = async () => {
 const getBracelets = async () => {
     try {
         const response = await client.get('/bracelets');
+
         console.log(response.data)
         return response.data
     } catch (error) {
@@ -64,13 +62,11 @@ const addMontre = async () => {
         // Réinitialisez le formulaire
         newMontre.value = {
             form_montre: '',
-            id_utilisateur_commande: '',
-            id_utilisateur_enregistrer: '',
+            id_user: '',
             boitier_fond: '',
             bracelet_texture: '',
-            id_heure: '',
-            id_minute: '',
-            id_seconde: '',
+
+
         };
 
 
@@ -105,16 +101,13 @@ onMounted(async () => {
             <ul>
                 <li v-for="montre in montres" :key="montre.id_montre">
                     {{ montre.id_montre }}
-                    {{ montre.id_utilisateur_commande }}
-                    {{ montre.id_utilisateur_enregistrer }}
+                    {{ montre.id_user }}
                     {{ montre.id_bracelet }}
                     {{ montre.bracelet }}
                     {{ montre.id_boitier }}
                     {{ montre.boitier }}
                     {{ montre.materiaux }}
-                    {{ montre.id_heure }}
-                    {{ montre.id_minute }}
-                    {{ montre.id_seconde }}
+
                 </li>
             </ul>
         </div>
@@ -134,20 +127,10 @@ onMounted(async () => {
 
             </select>
 
-            <label for="id_heure">Id Heure:</label>
-            <input v-model="newMontre.id_heure" type="text" required>
 
-            <label for="id_minute">Id Minute:</label>
-            <input v-model="newMontre.id_minute" type="text" required>
 
-            <label for="id_seconde">Id Seconde:</label>
-            <input v-model="newMontre.id_seconde" type="text" required>
-
-            <label for="id_utilisateur_commande">Id Utilisateur Commande:</label>
-            <input v-model="newMontre.id_utilisateur_commande" type="text" required>
-
-            <label for="id_utilisateur_enregistrer">Id Utilisateur Enregistrer:</label>
-            <input v-model="newMontre.id_utilisateur_enregistrer" type="text" required>
+            <label for="id_user">Id User:</label>
+            <input v-model="newMontre.id_user" type="text" required>
 
             <button type="submit">Ajouter</button>
 
