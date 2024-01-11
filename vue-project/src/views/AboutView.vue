@@ -19,6 +19,17 @@ const client = axios.create({
   baseURL: import.meta.env.VITE_API_URL,
 });
 
+// Stocke l'id de l'utilisateur connecté
+const userId = ref(localStorage.getItem('userId') || null);
+const userToken = ref(localStorage.getItem('userToken') || null);
+
+// Informations de connexion
+const loginData = ref({
+  user_email: '',
+  user_password: '',
+});
+
+
 const getMontres = async () => {
   try {
     const response = await client.get('/montres');
@@ -50,13 +61,35 @@ const addMontre = async () => {
 
 onMounted(getMontres);
 
+
 // Fonction de connexion
 const login = async () => {
   try {
-    const response = await client.post('/login', { /* Les détails de connexion ici */ });
-    userToken.value = response.data.token;
-    localStorage.setItem('userToken', userToken.value);
+    // Effectue la requête de connexion pour obtenir le token et userId
+    const response = await client.post('/login', loginData.value);
+
+
+    // Met à jour l'identifiant utilisateur et le stocke dans le localStorage
+    userId.value = response.data.user.id_user;
+    localStorage.setItem('userId', userId.value);
+    console.log(response.data)
+
+    // Affiche la valeur de userId
+    console.log('Identifiant utilisateur:', userId.value);
+
+    // Affiche les valeurs de user_email et user_password
+    console.log('Email de l\'utilisateur:', loginData.value.user_email);
+    console.log('Mot de passe de l\'utilisateur:', loginData.value.user_password);
+
+
+
+    // Met à jour les valeurs des champs liés à l'utilisateur connecté
+    newMontre.value.id_utilisateur_commande = userId.value;
+    newMontre.value.id_utilisateur_enregistrer = userId.value;
+
     console.log('Connecté avec succès', response.data);
+    console.log(newMontre.value.id_utilisateur_enregistrer)
+    console.log(newMontre.value.id_utilisateur_commande)
   } catch (error) {
     console.error('Erreur lors de la connexion :', error.message);
   }
@@ -64,13 +97,16 @@ const login = async () => {
 
 // Fonction de déconnexion
 const logout = () => {
+  // Supprime le token et le localStorage
   userToken.value = null;
   localStorage.removeItem('userToken');
+
+  // Supprime l'identifiant utilisateur et le localStorage
+  userId.value = null;
+  localStorage.removeItem('userId');
+
   console.log('Déconnecté avec succès');
 };
-
-const userToken = ref(localStorage.getItem('userToken') || null);
-
 </script>
 <template>
   <DefaultLayout>
@@ -123,11 +159,23 @@ const userToken = ref(localStorage.getItem('userToken') || null);
         <button type="submit">Ajouter</button>
       </form>
     </div>
-    <p v-if="userToken">Utilisateur connecté!</p>
-    <p v-else>Veuillez vous connecter.</p>
 
-    <button v-if="!userToken" @click="login">Se connecter</button>
-    <button v-if="userToken" @click="logout">Se déconnecter</button>
+    <div>
+      <h2>Connexion</h2>
+      <form @submit.prevent="login">
+        <label for="user_email">Email:</label>
+        <input v-model="loginData.user_email" type="email" required>
+
+        <label for="user_password">Mot de passe:</label>
+        <input v-model="loginData.user_password" type="password" required>
+
+        <button type="submit">Se connecter</button>
+      </form>
+    </div>
+
+    <!-- Affichage du statut de connexion -->
+    <p v-if="userToken">Utilisateur connecté! <button @click="logout">Se déconnecter</button></p>
+    <p v-else>Veuillez vous connecter.</p>
 
 
     <template #footer> Nouveau Footer </template>
