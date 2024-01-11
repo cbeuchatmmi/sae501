@@ -23,6 +23,12 @@ let bracelet = null;
 let fermoir = null;
 let texture_boitier = null;
 let texture_bracelet = null;
+let sol = null;
+let texture_sol = null;
+let illuminateHands = false;  // Variable pour suivre l'état d'illumination des aiguilles
+let illuminationTimeout = null;  // Variable pour suivre le délai d'illumination
+
+
 
 
 const props = defineProps({
@@ -39,8 +45,16 @@ let currentBoitier = ''; // Variable pour suivre le boitier actuel
 
 const initScene = () => {
     scene = new THREE.Scene();
-    camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-    camera.position.z = 1;
+    camera = new THREE.PerspectiveCamera(15, window.innerWidth / window.innerHeight, 0.1, 1000);
+    camera.position.y = 0.5;
+    camera.position.x = 0.5; // Augmentez la valeur pour déplacer la caméra plus loin de l'objet
+    camera.position.z = 0.5; // Augmentez la valeur pour déplacer la caméra plus loin de l'objet
+
+
+    // scene.background = new THREE.Color(0x0000ff);
+    const backgroundTexture = new THREE.TextureLoader().load('/images/background.jpg');
+    scene.background = backgroundTexture;
+
 
     renderer = new THREE.WebGLRenderer({ canvas: canvas.value });
     renderer.setSize(width, height);
@@ -66,16 +80,37 @@ const updateClockHands = () => {
     if (aiguille_heures) {
         const hoursRotation = (hours + minutes / 60) * (Math.PI / 6); // 30 degrés par heure, 0.5 degré par minute
         aiguille_heures.rotation.z = -hoursRotation;
+        // Appliquer l'auto-illumination si illuminateHands est vrai
+        if (illuminateHands) {
+            aiguille_heures.material.emissive.set(0xffffff);
+        } else {
+            // Réinitialiser la couleur si l'auto-illumination n'est pas activée
+            aiguille_heures.material.emissive.set(0x000000);
+        }
     }
 
     if (aiguille_minutes) {
         const minutesRotation = minutes * (Math.PI / 30); // 6 degrés par minute
         aiguille_minutes.rotation.z = -minutesRotation;
+        // Appliquer l'auto-illumination si illuminateHands est vrai
+        if (illuminateHands) {
+            aiguille_minutes.material.emissive.set(0xffffff);
+        } else {
+            // Réinitialiser la couleur si l'auto-illumination n'est pas activée
+            aiguille_minutes.material.emissive.set(0x000000);
+        }
     }
 
     if (aiguille_secondes) {
         const secondsRotation = seconds * (Math.PI / 30); // 6 degrés par seconde
         aiguille_secondes.rotation.z = -secondsRotation;
+        // Appliquer l'auto-illumination si illuminateHands est vrai
+        if (illuminateHands) {
+            aiguille_secondes.material.emissive.set(0xffffff);
+        } else {
+            // Réinitialiser la couleur si l'auto-illumination n'est pas activée
+            aiguille_secondes.material.emissive.set(0x000000);
+        }
     }
 };
 
@@ -83,7 +118,7 @@ const updateClockHands = () => {
 const animate = () => {
     const dt = clock.getDelta();
     animationId = requestAnimationFrame(animate);
-    updateClockHands(); // Call the function to update watch hands rotation
+    updateClockHands();
     renderer.render(scene, camera);
 };
 
@@ -107,14 +142,22 @@ const onLoaded = (collada) => {
     const textureLoader = new THREE.TextureLoader();
     texture_boitier = textureLoader.load(`/images/background_${montre.fond.value}.png`);
     texture_bracelet = textureLoader.load(`/images/texture-${montre.bracelet.value}.jpg`);
+    texture_sol = textureLoader.load('/images/sol.jpg'); // Remplacez par votre chemin
 
     // Appliquer les textures aux objets
     boitier_carre.material[1].map = texture_boitier;
     bracelet.material.map = texture_bracelet;
 
-    // Initialiser la scène avec le boitier carré
+    // Définir le matériau du sol
+    const solMaterial = new THREE.MeshBasicMaterial({ map: texture_sol, side: THREE.DoubleSide });
 
+    const solGeometry = new THREE.CircleGeometry(2, 64);
+    sol = new THREE.Mesh(solGeometry, solMaterial);
+    sol.rotation.x = -Math.PI / 2;
+    sol.position.y = -0.5;
+    scene.add(sol);
 };
+
 
 const onProgress = (data) => {
     if (data.lengthComputable) {
@@ -129,8 +172,6 @@ const onError = (data) => {
 
 const onClick = () => {
     console.log('document cliqué');
-
-    // Basculer entre le boitier rond et carré lors du clic
     if (montre.boitier.value === 'carre') {
         boitier_carre.visible = true
         boitier_rond.visible = false
@@ -138,6 +179,13 @@ const onClick = () => {
         boitier_carre.visible = false
         boitier_rond.visible = true
     }
+
+    // Activer l'illumination des aiguilles et définir le délai pour la désactiver après 10 secondes
+    illuminateHands = true;
+    clearTimeout(illuminationTimeout);
+    illuminationTimeout = setTimeout(() => {
+        illuminateHands = false;
+    }, 10000);
 };
 
 onMounted(() => {
