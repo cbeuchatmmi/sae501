@@ -1,6 +1,6 @@
 <script setup>
 import DefaultLayout from '@/components/layouts/DefaultLayout.vue'
-
+import ListeMontre from '../components/elements/ListeMontre.vue';
 </script>
 
 <template>
@@ -16,6 +16,9 @@ import DefaultLayout from '@/components/layouts/DefaultLayout.vue'
     </template>
 
 
+    <div>
+      <ListeMontre />
+    </div>
 
 
 

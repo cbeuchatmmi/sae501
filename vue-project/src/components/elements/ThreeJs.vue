@@ -46,9 +46,9 @@ let currentBoitier = ''; // Variable pour suivre le boitier actuel
 const initScene = () => {
     scene = new THREE.Scene();
     camera = new THREE.PerspectiveCamera(15, window.innerWidth / window.innerHeight, 0.1, 1000);
-    camera.position.y = 0.5;
-    camera.position.x = 0.5; // Augmentez la valeur pour déplacer la caméra plus loin de l'objet
-    camera.position.z = 0.5; // Augmentez la valeur pour déplacer la caméra plus loin de l'objet
+    camera.position.y = 0.25;
+    camera.position.x = 0.25; // Augmentez la valeur pour déplacer la caméra plus loin de l'objet
+    camera.position.z = 0.25; // Augmentez la valeur pour déplacer la caméra plus loin de l'objet
 
 
     // scene.background = new THREE.Color(0x0000ff);
@@ -151,6 +151,14 @@ const onLoaded = (collada) => {
     // Définir le matériau du sol
     const solMaterial = new THREE.MeshBasicMaterial({ map: texture_sol, side: THREE.DoubleSide });
 
+    if (montre.boitier.value === 'carre') {
+        boitier_carre.visible = true
+        boitier_rond.visible = false
+    } else if (montre.boitier.value === 'rond') {
+        boitier_carre.visible = false
+        boitier_rond.visible = true
+    }
+
     const solGeometry = new THREE.CircleGeometry(2, 64);
     sol = new THREE.Mesh(solGeometry, solMaterial);
     sol.rotation.x = -Math.PI / 2;
@@ -172,13 +180,7 @@ const onError = (data) => {
 
 const onClick = () => {
     console.log('document cliqué');
-    if (montre.boitier.value === 'carre') {
-        boitier_carre.visible = true
-        boitier_rond.visible = false
-    } else if (montre.boitier.value === 'rond') {
-        boitier_carre.visible = false
-        boitier_rond.visible = true
-    }
+
 
     // Activer l'illumination des aiguilles et définir le délai pour la désactiver après 10 secondes
     illuminateHands = true;
@@ -216,8 +218,8 @@ onUpdated(() => {
 
 <style lang="scss" scoped>
 .test {
-    height: rem(1000);
-    width: rem(1000);
+    height: rem(500);
+    width: rem(500);
 }
 
 /* Ajoutez du style si nécessaire */
