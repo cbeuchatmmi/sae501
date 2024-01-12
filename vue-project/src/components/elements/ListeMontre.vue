@@ -26,17 +26,17 @@ onMounted(getMontres);
 
 <template>
     <DefaultLayout>
-
         <h1>Liste des Montres</h1>
-        <div class="three"> <!-- Appliquez la classe three ici -->
-            <div v-for="montre in montres" :key="montre.id_montre">
+        <div class="three">
+            <router-link :to="{ name: 'montre-detail', params: { id: montre.id_montre } }" v-for="montre in montres"
+                :key="montre.id_montre">
                 <div>
                     {{ montre.form_montre }} - {{ montre.boitier_fond }} - {{ montre.bracelet_texture }} - {{
-                        montre.montre_prix }}
+                        montre.montre_prix }}€
                     <ThreeJs :fond="montre.boitier_fond" :boitier="montre.form_montre"
                         :bracelet="montre.bracelet_texture" />
                 </div>
-            </div>
+            </router-link>
         </div>
         <template #footer> Nouveau Footer </template>
     </DefaultLayout>
@@ -48,5 +48,4 @@ onMounted(getMontres);
     grid-template-columns: 1fr 1fr 1fr;
     list-style: none;
     padding: 0;
-}
-</style>
+}</style>

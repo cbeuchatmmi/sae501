@@ -32,6 +32,8 @@ const login = async () => {
     // Met à jour l'identifiant utilisateur et le stocke dans le localStorage
     userId.value = response.data.user.id_user;
     localStorage.setItem('userId', userId.value);
+    console.log("salut", userId)
+    console.log("salut2", userId.value)
     console.log(response.data)
 
     // Affiche la valeur de userId
@@ -92,7 +94,7 @@ const logout = () => {
     </div>
 
     <!-- Affichage du statut de connexion -->
-    <p v-if="userToken">Utilisateur connecté! <button @click="logout">Se déconnecter</button></p>
+    <p v-if="userId">Utilisateur connecté! <button @click="logout">Se déconnecter</button></p>
     <p v-else>Veuillez vous connecter.</p>
 
 
