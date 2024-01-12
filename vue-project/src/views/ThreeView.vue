@@ -7,28 +7,26 @@ import ThreeJs from '../components/elements/ThreeJs.vue';
 const montres = ref([]);
 const bracelets = ref([]);
 const boitiers = ref([]);
-
+const userId = ref(); // Utilisez userId directement
 
 const newMontre = ref({
     form_montre: 'carre',
-    id_user: '',
     boitier_fond: 'black01',
     bracelet_texture: 'tissus-or',
-
+    panier: false,
+    id_user: userId.value, // Assurez-vous que userId est correctement défini ici
 });
-
 
 // Client axios global
 const client = axios.create({
     baseURL: import.meta.env.VITE_API_URL,
 });
 
-
 const getMontres = async () => {
     try {
         const response = await client.get('/montres');
         montres.value = response.data.montres;
-        console.log(montres.value)
+        console.log(montres.value);
     } catch (error) {
         console.error('Erreur lors de la récupération des montres :', error.message);
     }
@@ -37,51 +35,59 @@ const getMontres = async () => {
 const getBracelets = async () => {
     try {
         const response = await client.get('/bracelets');
-
-        console.log(response.data)
-        return response.data
+        console.log(response.data);
+        return response.data;
     } catch (error) {
         console.error('Erreur lors de la récupération des bracelets :', error.message);
     }
 };
+
 const getBoitiers = async () => {
     try {
         const response = await client.get('/boitiers');
-        console.log(response.data)
-        return response.data
+        console.log(response.data);
+        return response.data;
     } catch (error) {
         console.error('Erreur lors de la récupération des boitiers :', error.message);
     }
 };
 
 const addMontre = async () => {
+    // Assurez-vous que userId est correctement défini ici
+    newMontre.value.id_user = userId.value;
+    console.log("bonjour", newMontre.value.id_user)
     try {
         await client.post('/montres/add', newMontre.value);
-        // Actualisez la liste des montres après l'ajout
-        await getMontres();
-        // Réinitialisez le formulaire
         newMontre.value = {
-            form_montre: '',
-            id_user: '',
-            boitier_fond: '',
-            bracelet_texture: '',
-
-
+            id_user: userId.value, // Assurez-vous que userId est correctement défini ici
+            form_montre: 'carre',
+            boitier_fond: 'black02',
+            bracelet_texture: 'tissus-or',
+            panier: false,
         };
-
-
     } catch (error) {
-        console.error('Erreur lors de l\'ajout de la montre :', error.message);
+        console.error('Erreur lors de l\'ajout de la montre:', error.message);
     }
 };
 
+
 onMounted(async () => {
+    // Récupérez userId du localStorage
+    userId.value = localStorage.getItem('userId');
+    console.log("slaut", userId.value)
+    // Assurez-vous que userId est correctement défini ici
+    if (!userId.value) {
+        console.error('Erreur: userId est null');
+        return;
+    }
+
     getMontres();
     boitiers.value = await getBoitiers();
-    bracelets.value = await getBracelets()
+    bracelets.value = await getBracelets();
 });
-
 </script>
+
+
 
 <template>
     <DefaultLayout>
@@ -113,6 +119,7 @@ onMounted(async () => {
         </div>
 
         <form @submit.prevent="addMontre">
+            <input type="hidden">
             <select v-model="newMontre.bracelet_texture" required>
                 <option v-for="(bracelet, index) in bracelets" :key="index" :value="bracelet.bracelet_texture"
                     :label="bracelet.bracelet_texture" />
@@ -126,11 +133,7 @@ onMounted(async () => {
                 <option value="rond" label="Rond"></option>
 
             </select>
-
-
-
-            <label for="id_user">Id User:</label>
-            <input v-model="newMontre.id_user" type="text" required>
+            <input type="checkbox" v-model="newMontre.panier">
 
             <button type="submit">Ajouter</button>
 
