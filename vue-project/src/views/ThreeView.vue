@@ -119,7 +119,6 @@ onMounted(async () => {
         </div>
 
         <form @submit.prevent="addMontre">
-            <input type="hidden">
             <select v-model="newMontre.bracelet_texture" required>
                 <option v-for="(bracelet, index) in bracelets" :key="index" :value="bracelet.bracelet_texture"
                     :label="bracelet.bracelet_texture" />
