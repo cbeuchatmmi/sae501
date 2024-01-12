@@ -30,7 +30,7 @@ const deleteMontre = async () => {
         console.log("je suis id_user", montre.value.id_user)
         console.log("je suis userId", userId)
         // Check if the id_user of the montre matches the userId from localStorage
-        if (montre.value.id_user == userId) {
+        if (montre.value.id_user === userId) {
             await client.delete(`/montres/${montreId.value}/delete`);
             // Redirect to the home page or another route after successful deletion
             router.push('/');
@@ -54,6 +54,9 @@ onMounted(() => {
             <ThreeJs :fond="montre.boitier_fond" :boitier="montre.form_montre" :bracelet="montre.bracelet_texture" />
             <button @click="deleteMontre">Supprimer la Montre</button>
         </div>
+
+
+
         <template #footer> Nouveau Footer </template>
     </DefaultLayout>
 </template>
