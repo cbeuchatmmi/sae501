@@ -1,4 +1,18 @@
-        
+<template>
+    <DefaultLayout>
+        <h1>Détails de la Montre</h1>
+        <div v-if="montre">
+            {{ montre.form_montre }} - {{ montre.boitier_fond }} - {{ montre.bracelet_texture }} - {{ montre.montre_prix }}€
+            <ThreeJs :fond="montre.boitier_fond" :boitier="montre.form_montre" :bracelet="montre.bracelet_texture" />
+            <button @click="deleteMontre">Supprimer la Montre</button>
+        </div>
+        <div v-else>
+            Chargement des détails de la montre...
+        </div>
+        <template #footer> Nouveau Footer </template>
+    </DefaultLayout>
+</template>
+  
 <script setup>
 import { ref, onMounted } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
@@ -14,12 +28,13 @@ const client = axios.create({
 });
 
 const montre = ref([]);
-const userId = localStorage.getItem('userId'); // Assuming you have stored userId in localStorage
+const userId = localStorage.getItem('userId');
 
 const getMontreDetails = async () => {
     try {
         const response = await client.get(`/montres/id/${montreId.value}`);
-        montre.value = response.data.montres;
+        montre.value = response.data;
+        console.log("montre", montre.value)
     } catch (error) {
         console.error('Erreur lors de la récupération des détails de la montre :', error.message);
     }
@@ -27,12 +42,8 @@ const getMontreDetails = async () => {
 
 const deleteMontre = async () => {
     try {
-        console.log("je suis id_user", montre.value.id_user)
-        console.log("je suis userId", userId)
-        // Check if the id_user of the montre matches the userId from localStorage
-        if (montre.value.id_user === userId) {
+        if (montre.value.id_user == userId) {
             await client.delete(`/montres/${montreId.value}/delete`);
-            // Redirect to the home page or another route after successful deletion
             router.push('/');
         } else {
             console.error('Vous n\'êtes pas autorisé à supprimer cette montre.');
@@ -46,18 +57,4 @@ onMounted(() => {
     getMontreDetails();
 });
 </script>
-<template>
-    <DefaultLayout>
-        <h1>Détails de la Montre</h1>
-        <div>
-            {{ montre.form_montre }} - {{ montre.boitier_fond }} - {{ montre.bracelet_texture }} - {{ montre.montre_prix }}€
-            <ThreeJs :fond="montre.boitier_fond" :boitier="montre.form_montre" :bracelet="montre.bracelet_texture" />
-            <button @click="deleteMontre">Supprimer la Montre</button>
-        </div>
-
-
-
-        <template #footer> Nouveau Footer </template>
-    </DefaultLayout>
-</template>
   
