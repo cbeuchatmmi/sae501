@@ -8,6 +8,7 @@ const priceFilter = ref('');
 const braceletTextureFilter = ref('');
 const boitierFondFilter = ref('');
 const formMontreFilter = ref('');
+const limit = ref(10); // Nombre initial de montres à afficher
 
 const client = axios.create({
     baseURL: import.meta.env.VITE_API_URL,
@@ -29,21 +30,28 @@ const uniquePrices = computed(() => Array.from(new Set(montres.value.map(m => m.
 const uniqueBraceletTextures = computed(() => Array.from(new Set(montres.value.map(m => m.bracelet_texture))));
 const uniqueBoitierFonds = computed(() => Array.from(new Set(montres.value.map(m => m.boitier_fond))));
 
-// Apply filters to the montres list
+// Apply filters and limit to the montres list
 const filteredMontres = computed(() => {
-    return montres.value.filter(montre => {
-        const priceMatches = !priceFilter.value || montre.montre_prix === parseFloat(priceFilter.value);
-        const braceletTextureMatches = !braceletTextureFilter.value || montre.bracelet_texture === braceletTextureFilter.value;
-        const boitierFondMatches = !boitierFondFilter.value || montre.boitier_fond === boitierFondFilter.value;
-        const formMontreMatches = !formMontreFilter.value || montre.form_montre === formMontreFilter.value;
+    return montres.value
+        .filter(montre => {
+            const priceMatches = !priceFilter.value || montre.montre_prix === parseFloat(priceFilter.value);
+            const braceletTextureMatches = !braceletTextureFilter.value || montre.bracelet_texture === braceletTextureFilter.value;
+            const boitierFondMatches = !boitierFondFilter.value || montre.boitier_fond === boitierFondFilter.value;
+            const formMontreMatches = !formMontreFilter.value || montre.form_montre === formMontreFilter.value;
 
-        return priceMatches && braceletTextureMatches && boitierFondMatches && formMontreMatches;
-    });
+            return priceMatches && braceletTextureMatches && boitierFondMatches && formMontreMatches;
+        })
+        .slice(0, limit.value); // Appliquer la limite ici
 });
 
 // Function to apply filters when any filter changes
 const applyFilters = () => {
-    // You can add additional logic here if needed
+    // Vous pouvez ajouter une logique supplémentaire ici si nécessaire
+};
+
+// Fonction pour augmenter la limite d'affichage
+const showAllMontres = () => {
+    limit.value = montres.value.length;
 };
 
 // Fonction pour mettre à jour la valeur du panier
@@ -114,7 +122,10 @@ const updatePanierValue = async (idMontre, newValue) => {
         </div>
     </div>
 
-    <div></div>
+    <!-- Bouton pour afficher toutes les montres -->
+    <button @click="showAllMontres" class="show-all-button">
+        Afficher toutes les montres
+    </button>
 </template>
 <style lang="scss" scoped>
 .title {
@@ -175,5 +186,15 @@ const updatePanierValue = async (idMontre, newValue) => {
         }
     }
 }
+
+.show-all-button {
+    margin: rem(20);
+    background-color: $primary-color;
+    color: $white;
+    font-size: $button;
+    border: none;
+    border-radius: rem(16);
+    padding: rem(10);
+    cursor: pointer;
+}
 </style>
-  
