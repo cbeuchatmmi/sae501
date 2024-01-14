@@ -106,6 +106,7 @@ watch(() => newMontre.value.panier, (newVal) => {
     </form>
 </template>
 
+
 <style lang="scss">
 /* Ajoutez du style si nécessaire */
 

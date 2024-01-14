@@ -1,35 +1,46 @@
 <script setup>
-import MyIcon from '../components/elements/MyIcon.vue';
+import { ref } from 'vue';
 import AddUser from '../components/elements/AddUser.vue';
+import MyConnexion from '../components/elements/MyConnexion.vue';
 
+const showAddUser = ref(false);
+const showMyConnexion = ref(true);
+
+const toggleAddUser = () => {
+    showAddUser.value = !showAddUser.value;
+    showMyConnexion.value = !showAddUser.value;
+};
 </script>
 
 <template>
-    <template>
-        <nav>
-            <div class="header">
-                <div class="header__left">
-                    <a href="/">
-                        <MyIcon name="" />
-                    </a>
-                    <a href="/add" class="header__left--link">Création</a>
-                </div>
-                <div class="header__right">
-                    <a href="/panier">
-                        <MyIcon name="panier" />
-                    </a>
-                    <a href="/login">
-                        <MyIcon name="profil" />
-                    </a>
-                </div>
-            </div>
-        </nav>
-    </template>
+    <div class="login">
+        <MyConnexion v-if="showMyConnexion" />
 
-    <AddUser />
+        <button class="login__button" v-if="showMyConnexion" @click="toggleAddUser">
+            Créer un compte
+        </button>
 
-    <template>
-    </template>
+        <AddUser v-if="showAddUser" />
+        <button class="login__button" v-if="showAddUser" @click="toggleAddUser">
+            Se connecter
+        </button>
+    </div>
 </template>
 
-<style lang="scss"></style>
+<style lang="scss">
+.login {
+    background-color: $light-black;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-items: center;
+
+    &__button {
+        border: none;
+        background: none;
+        color: $primary-color;
+        font-size: $body;
+        cursor: pointer;
+    }
+}
+</style>
