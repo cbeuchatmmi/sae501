@@ -55,10 +55,14 @@ const deleteMontre = async () => {
 
 const updateMontre = async () => {
     try {
-        await client.put(`/montres/${montreId.value}/update`, updatedMontre.value);
-        // Mettez à jour les données après la modification si nécessaire
-        montre.value = await getMontreDetails();
-        console.log("montre.value", montre.value)
+        if (montre.value.id_user == userId) {
+            await client.put(`/montres/${montreId.value}/update`, updatedMontre.value);
+            montre.value = await getMontreDetails();
+            console.log("montre.value", montre.value)
+        } else {
+            console.error('Vous n\'êtes pas autorisé à supprimer cette montre.');
+        }
+
     } catch (error) {
         console.error('Erreur lors de la mise à jour de la montre :', error.message);
     }
