@@ -1,6 +1,7 @@
 <script setup>
 import DefaultLayout from '@/components/layouts/DefaultLayout.vue'
 import ListeMontre from '../components/elements/ListeMontre.vue';
+import MyPanier from '../components/elements/MyPanier.vue';
 </script>
 
 <template>
@@ -15,11 +16,13 @@ import ListeMontre from '../components/elements/ListeMontre.vue';
       </nav>
     </template>
 
+    <div>
+      <MyPanier />
+    </div>
 
     <div>
       <ListeMontre />
     </div>
-
 
 
     <template #footer>

@@ -1,4 +1,3 @@
-
 <script setup>
 import DefaultLayout from '@/components/layouts/DefaultLayout.vue';
 import ThreeJs from './ThreeJs.vue';
@@ -47,6 +46,17 @@ const filteredMontres = computed(() => {
 const applyFilters = () => {
     // You can add additional logic here if needed
 };
+
+// Fonction pour mettre à jour la valeur du panier
+const updatePanierValue = async (idMontre, newValue) => {
+    try {
+        await client.put(`/montres/${idMontre}/update-panier`, { panier: newValue });
+        // Mettez à jour la liste des montres après la modification
+        await getMontres();
+    } catch (error) {
+        console.error('Erreur lors de la mise à jour du panier de la montre:', error.message);
+    }
+};
 </script>
 
 <template>
@@ -83,15 +93,21 @@ const applyFilters = () => {
 
         <!-- Montre List -->
         <div class="three">
-            <router-link :to="{ name: 'montre-detail', params: { id: montre.id_montre } }" v-for="montre in filteredMontres"
-                :key="montre.id_montre">
-                <div>
-                    {{ montre.form_montre }} - {{ montre.boitier_fond }} - {{ montre.bracelet_texture }} - {{
-                        montre.montre_prix }}€
-                    <ThreeJs :fond="montre.boitier_fond" :boitier="montre.form_montre"
-                        :bracelet="montre.bracelet_texture" />
-                </div>
-            </router-link>
+            <div v-for="montre in filteredMontres" :key="montre.id_montre">
+                <router-link :to="{ name: 'montre-detail', params: { id: montre.id_montre } }">
+                    <div>
+                        {{ montre.form_montre }} - {{ montre.boitier_fond }} - {{ montre.bracelet_texture }} - {{
+                            montre.montre_prix }}€
+                        <ThreeJs :fond="montre.boitier_fond" :boitier="montre.form_montre"
+                            :bracelet="montre.bracelet_texture" />
+                    </div>
+                </router-link>
+
+                <!-- Ajouter un bouton pour mettre à jour la valeur du panier -->
+                <button @click="updatePanierValue(montre.id_montre, !montre.panier)">
+                    {{ montre.panier ? 'Retirer du panier' : 'Ajouter au panier' }}
+                </button>
+            </div>
         </div>
 
         <template #footer> Nouveau Footer </template>
