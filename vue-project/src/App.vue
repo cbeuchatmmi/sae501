@@ -55,5 +55,6 @@ import MyIcon from './components/elements/MyIcon.vue'
 
 .footer {
   background-color: $black;
+  height: 30vh;
 }
 </style>
