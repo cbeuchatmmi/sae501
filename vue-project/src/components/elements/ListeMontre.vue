@@ -9,21 +9,32 @@ const braceletTextureFilter = ref('');
 const boitierFondFilter = ref('');
 const formMontreFilter = ref('');
 const limit = ref(10); // Nombre initial de montres à afficher
+const userId = ref(); // Utilisez userId directement
+
 
 const client = axios.create({
     baseURL: import.meta.env.VITE_API_URL,
 });
-
 const getMontres = async () => {
     try {
-        const response = await client.get('/montres');
-        montres.value = response.data.montres;
+        if (userId.value) {
+            const response = await client.get(`/montres?userId=${userId.value}`);
+            montres.value = response.data.montres;
+        }
     } catch (error) {
         console.error('Erreur lors de la récupération des montres :', error.message);
     }
 };
+onMounted(async () => {
+    userId.value = localStorage.getItem('userId');
+    if (!userId.value) {
+        console.error('Erreur: userId est null');
+        return;
+    }
 
-onMounted(getMontres);
+    getMontres();
+}
+);
 
 // Extract unique values for each filter
 const uniquePrices = computed(() => Array.from(new Set(montres.value.map(m => m.montre_prix))));
