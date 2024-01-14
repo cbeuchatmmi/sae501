@@ -1,6 +1,6 @@
 <script setup>
 import DefaultLayout from '@/components/layouts/DefaultLayout.vue';
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, watch } from 'vue';
 import axios from 'axios';
 import ThreeJs from '../components/elements/ThreeJs.vue';
 
@@ -55,7 +55,7 @@ const getBoitiers = async () => {
 const addMontre = async () => {
     // Assurez-vous que userId est correctement défini ici
     newMontre.value.id_user = userId.value;
-    console.log("bonjour", newMontre.value.id_user)
+    console.log("bonjour", newMontre.value.id_user);
     try {
         await client.post('/montres/add', newMontre.value);
         newMontre.value = {
@@ -70,11 +70,10 @@ const addMontre = async () => {
     }
 };
 
-
 onMounted(async () => {
     // Récupérez userId du localStorage
     userId.value = localStorage.getItem('userId');
-    console.log("slaut", userId.value)
+    console.log("slaut", userId.value);
     // Assurez-vous que userId est correctement défini ici
     if (!userId.value) {
         console.error('Erreur: userId est null');
@@ -85,6 +84,12 @@ onMounted(async () => {
     boitiers.value = await getBoitiers();
     bracelets.value = await getBracelets();
 });
+
+// Watch for changes in the checkbox and update panier accordingly
+watch(() => newMontre.value.panier, (newVal) => {
+    newMontre.value.panier = newVal;
+});
+
 </script>
 
 

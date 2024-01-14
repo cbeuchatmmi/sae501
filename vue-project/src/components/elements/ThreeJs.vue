@@ -27,6 +27,7 @@ let sol = null;
 let texture_sol = null;
 let illuminateHands = false;  // Variable pour suivre l'état d'illumination des aiguilles
 let illuminationTimeout = null;  // Variable pour suivre le délai d'illumination
+const canvasRef = ref(null);
 
 
 
@@ -121,7 +122,6 @@ const animate = () => {
     updateClockHands();
     renderer.render(scene, camera);
 };
-
 const onLoaded = (collada) => {
     const objects = collada.scene;
     scene.add(objects);
@@ -164,8 +164,21 @@ const onLoaded = (collada) => {
     sol.rotation.x = -Math.PI / 2;
     sol.position.y = -0.5;
     scene.add(sol);
-};
 
+    // Masquer les aiguilles qui ne sont pas en animation
+    if (aiguille_heures) {
+        aiguille_heures.visible = true;
+        aiguille_heures.material.emissive.set(0x000000);
+    }
+    if (aiguille_minutes) {
+        aiguille_minutes.visible = true;
+        aiguille_minutes.material.emissive.set(0x000000);
+    }
+    if (aiguille_secondes) {
+        aiguille_secondes.visible = true;
+        aiguille_secondes.material.emissive.set(0x000000);
+    }
+};
 
 const onProgress = (data) => {
     if (data.lengthComputable) {
@@ -178,16 +191,19 @@ const onError = (data) => {
     console.error(data);
 };
 
-const onClick = () => {
-    console.log('document cliqué');
 
+const onClick = (event) => {
+    // Vérifiez si le clic s'est produit sur l'élément canvas
+    if (event.target === canvas.value) {
+        console.log('canvas cliqué');
 
-    // Activer l'illumination des aiguilles et définir le délai pour la désactiver après 10 secondes
-    illuminateHands = true;
-    clearTimeout(illuminationTimeout);
-    illuminationTimeout = setTimeout(() => {
-        illuminateHands = false;
-    }, 10000);
+        // Activer l'illumination des aiguilles et définir le délai pour la désactiver après 10 secondes
+        illuminateHands = true;
+        clearTimeout(illuminationTimeout);
+        illuminationTimeout = setTimeout(() => {
+            illuminateHands = false;
+        }, 10000);
+    }
 };
 
 onMounted(() => {
@@ -196,14 +212,19 @@ onMounted(() => {
     initScene();
     animate();
 
+    // Attachez l'événement de clic à l'élément canvas
+    canvas.value.addEventListener('click', onClick);
+
     document.addEventListener('click', onClick);
 });
 
 onBeforeUnmount(() => {
     cancelAnimationFrame(animationId);
+
+    // Détachez l'événement de clic lors de la destruction du composant
+    canvas.value.removeEventListener('click', onClick);
     document.removeEventListener('click', onClick);
 });
-
 
 onUpdated(() => {
     initScene();
@@ -212,7 +233,7 @@ onUpdated(() => {
 
 <template>
     <div ref="test" class="test">
-        <canvas ref="canvas" />
+        <canvas ref="canvas" :ref="canvasRef" />
     </div>
 </template>
 
