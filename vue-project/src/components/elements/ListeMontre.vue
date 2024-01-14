@@ -57,6 +57,13 @@ const showAllMontres = () => {
 // Fonction pour mettre à jour la valeur du panier
 const updatePanierValue = async (idMontre, newValue) => {
     try {
+        // Vérifier si l'utilisateur est connecté
+        const userId = localStorage.getItem('userId');
+        if (!userId) {
+            console.error('Vous devez être connecté pour mettre à jour le panier.');
+            return;
+        }
+
         await client.put(`/montres/${idMontre}/update-panier`, { panier: newValue });
         // Mettez à jour la liste des montres après la modification
         await getMontres();
