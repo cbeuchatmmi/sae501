@@ -84,33 +84,109 @@ watch(() => newMontre.value.panier, (newVal) => {
 </script>
 
 <template>
-    <form @submit.prevent="addMontre">
-        <select v-model="newMontre.bracelet_texture" required>
-            <option v-for="(bracelet, index) in bracelets" :key="index" :value="bracelet.bracelet_texture"
-                :label="bracelet.bracelet_texture" />
-        </select>
-        <select v-model="newMontre.boitier_fond" required>
-            <option v-for="(boitier, index) in boitiers" :key="index" :value="boitier.boitier_fond"
-                :label="boitier.boitier_fond" />
-        </select>
-        <select v-model="newMontre.form_montre" required>
-            <option value="carre" label="Carre"></option>
-            <option value="rond" label="Rond"></option>
-        </select>
-        <input type="checkbox" v-model="newMontre.panier">
-        <button type="submit">Ajouter</button>
+    <div class="add">
+
+        <form class="form" @submit.prevent="addMontre">
+            <h2 class="form__title">Créer une montre</h2>
+            <div class="form__content">
+                <label class="form__content--label">Texture du Bracelet</label>
+                <select class="form__content--select" v-model="newMontre.bracelet_texture" required>
+                    <option class="form__content--select--option" v-for="(bracelet, index) in bracelets" :key="index"
+                        :value="bracelet.bracelet_texture" :label="bracelet.bracelet_texture" />
+                </select>
+            </div>
+            <div class="form__content">
+                <label class="form__content--label">Fond du boitier</label>
+                <select class="form__content--select" v-model="newMontre.boitier_fond" required>
+                    <option class="form__content--select--option" v-for="(boitier, index) in boitiers" :key="index"
+                        :value="boitier.boitier_fond" :label="boitier.boitier_fond" />
+                </select>
+            </div>
+            <div class="form__content">
+                <label class="form__content--label">Forme du boitier</label>
+                <select class="form__content--select" v-model="newMontre.form_montre" required>
+                    <option class="form__content--select--option" value="carre" label="Carre"></option>
+                    <option class="form__content--select--option" value="rond" label="Rond"></option>
+                </select>
+            </div>
+            <div class="form__content">
+                <label class="form__content--label">Ajouter au panier?
+                    <input class="form__content--checkbox" type="checkbox" v-model="newMontre.panier">
+                </label>
+            </div>
+            <button class="form__button" type="submit">Ajouter</button>
+        </form>
         <div id="app" class="three">
             <ThreeJs :fond="newMontre.boitier_fond" :boitier="newMontre.form_montre"
                 :bracelet="newMontre.bracelet_texture" />
         </div>
-    </form>
+    </div>
 </template>
 
-<style lang="scss">
+
+<style lang="scss" scoped>
 /* Ajoutez du style si nécessaire */
+.add {
+    display: grid;
+    grid-template-columns: auto auto;
+    justify-items: center;
+    align-items: center;
+    height: 100vh;
+
+}
 
 .three {
-    width: rem(20);
-    height: rem(10);
+    width: rem(200);
+    height: rem(200);
+}
+
+.form {
+    background-color: $light-black;
+    width: 100%;
+    height: 100%;
+
+    display: flex;
+    flex-direction: column;
+    justify-items: center;
+    align-items: center;
+
+    &__title {
+        font-size: $h2;
+        color: $secondary-color;
+    }
+
+    &__content {
+
+        &--label {
+            color: $secondary-color;
+        }
+
+        &--select {
+            width: rem(200);
+            margin: rem(20);
+            background-color: $white;
+            border: none;
+            border: rem(2) solid $secondary-color ;
+            border-radius: rem(16);
+            padding: rem(16);
+
+            &--option {}
+        }
+
+        &__checkbox {
+            align-items: left;
+        }
+    }
+
+
+    &__button {
+        background: none;
+        border: none;
+        border-radius: rem(16);
+        background-color: $primary-color;
+        padding: rem(20);
+        font-size: $button;
+        cursor: pointer;
+    }
 }
 </style>

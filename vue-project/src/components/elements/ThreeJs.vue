@@ -56,6 +56,13 @@ const initScene = () => {
     const backgroundTexture = new THREE.TextureLoader().load('/images/background.jpg');
     scene.background = backgroundTexture;
 
+    // Ajout de la lumière ambiante
+    const ambientLight = new THREE.AmbientLight(0xffffff, 0.5); // Couleur, Intensité
+    scene.add(ambientLight);
+
+    // Ajout de la brume
+    scene.fog = new THREE.Fog(0x222222, 1, 5); // Couleur, Proche, Loin
+
 
     renderer = new THREE.WebGLRenderer({ canvas: canvas.value });
     renderer.setSize(width, height);
@@ -233,14 +240,18 @@ onUpdated(() => {
 
 <template>
     <div ref="test" class="test">
-        <canvas ref="canvas" :ref="canvasRef" />
+        <canvas ref="canvas" />
     </div>
 </template>
 
 <style lang="scss" scoped>
 .test {
-    height: rem(500);
-    width: rem(500);
+    position: relative;
+
+
+
+    height: rem(300);
+    width: rem(300);
 }
 
 /* Ajoutez du style si nécessaire */
