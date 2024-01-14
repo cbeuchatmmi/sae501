@@ -74,7 +74,7 @@ const logout = () => {
     </div>
 </template>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .connexion {
     display: flex;
     flex-direction: column;

@@ -31,18 +31,80 @@ onMounted(() => {
 </script>
 
 <template>
-    <div>
-        <h2>Ajouter un Utilisateur</h2>
-        <form @submit.prevent="addUtilisateur">
-            <label for="user_email">Email:</label>
-            <input v-model="newUtilisateur.user_email" type="email" required>
+    <div class="connexion">
+        <h2 class="connexion__title">Ajouter un Utilisateur</h2>
+        <form class="connexion__form" @submit.prevent="addUtilisateur">
+            <label class="connexion__form--label" for="user_email">Email:</label>
+            <input class="connexion__form--input" v-model="newUtilisateur.user_email" type="email" required>
 
-            <label for="user_password">Mot de passe:</label>
-            <input v-model="newUtilisateur.user_password" type="password" required>
+            <label class="connexion__form--label" for="user_password">Mot de passe:</label>
+            <input class="connexion__form--input" v-model="newUtilisateur.user_password" type="password" required>
 
-            <button type="submit">Ajouter</button>
+            <button class="connexion__form--button" type="submit">Ajouter</button>
         </form>
     </div>
 </template>
 
-<style lang="scss"></style>
+<div class="connexion">
+   
+</div>
+
+<style lang="scss" scoped>
+.connexion {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-items: center;
+    background-color: $light-black;
+
+
+    &__title {
+        font-size: $h2;
+        color: $secondary-color;
+    }
+
+    &__form {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-items: center;
+        color: $secondary-color;
+
+
+        &--label {
+            margin-top: rem(16);
+        }
+
+        &--input {
+            padding: rem(16);
+            width: rem(256);
+            border: none;
+
+            border-radius: rem(16);
+        }
+    }
+
+    &__form {
+
+
+        &--content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-items: center;
+            margin-top: rem(16);
+            margin-bottom: rem(16);
+        }
+
+        &--button {
+            background: none;
+            border: none;
+            border-radius: rem(16);
+            background-color: $primary-color;
+            padding: rem(20);
+            font-size: $button;
+            cursor: pointer;
+        }
+    }
+}
+</style>
