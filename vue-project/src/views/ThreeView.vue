@@ -1,8 +1,11 @@
 <script setup>
-import ThreeJs from "../components/elements/ThreeJs.vue"
-import DefaultLayout from '@/components/layouts/DefaultLayout.vue'
+import DefaultLayout from '@/components/layouts/DefaultLayout.vue';
+import AddMontre from '../components/elements/AddMontre.vue';
+
 
 </script>
+
+
 
 <template>
     <DefaultLayout>
@@ -17,10 +20,7 @@ import DefaultLayout from '@/components/layouts/DefaultLayout.vue'
         </template>
 
 
-        <div id="app" class="three">
-            <ThreeJs />
-        </div>
-
+        <AddMontre />
 
 
         <template #footer>
