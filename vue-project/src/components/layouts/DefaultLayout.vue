@@ -37,7 +37,7 @@
   }
 
   &__header {
-    // background: $primary-color;
+    background: $black;
     grid-area: header;
   }
 }

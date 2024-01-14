@@ -2,17 +2,29 @@
 import DefaultLayout from '@/components/layouts/DefaultLayout.vue'
 import ListeMontre from '../components/elements/ListeMontre.vue';
 import MyPanier from '../components/elements/MyPanier.vue';
+import MyIcon from '../components/elements/MyIcon.vue';
 </script>
 
 <template>
   <DefaultLayout>
     <template #header>
       <nav>
-        <ul>
-          <li><a href="/three">three</a></li>
-          <li><a href="/about">about</a></li>
-          <li><a href="/contact">contact</a></li>
-        </ul>
+        <div class="header">
+          <div class="header__left">
+            <a href="/">
+              <MyIcon name="" />
+            </a>
+            <a href="/add" class="header__left--link">Création</a>
+          </div>
+          <div class="header__right">
+            <a href="/panier">
+              <MyIcon name="panier" />
+            </a>
+            <a href="/login">
+              <MyIcon name="profil" />
+            </a>
+          </div>
+        </div>
       </nav>
     </template>
 
@@ -29,4 +41,29 @@ import MyPanier from '../components/elements/MyPanier.vue';
     </template>
   </DefaultLayout>
 </template>
-<style lang="scss"></style>
+<style lang="scss">
+.header {
+  display: flex;
+  justify-content: space-between;
+
+  &__left {
+    display: flex;
+    align-items: center;
+    justify-items: center;
+
+    &--link {
+      text-decoration: none;
+      font-weight: bold;
+      font-size: $button ;
+      color: $white;
+      margin-left: rem(32);
+    }
+  }
+
+  &__right {
+    display: flex;
+    align-items: center;
+    justify-items: center;
+  }
+}
+</style>

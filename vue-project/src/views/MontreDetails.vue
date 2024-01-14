@@ -1,7 +1,9 @@
 <script setup>
+import MyIcon from '../components/elements/MyIcon.vue';
+import DefaultLayout from '@/components/layouts/DefaultLayout.vue';
+
 import { ref, onMounted } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
-import DefaultLayout from '@/components/layouts/DefaultLayout.vue';
 import ThreeJs from '../components/elements/ThreeJs.vue';
 import axios from 'axios';
 
@@ -92,6 +94,28 @@ onMounted(() => {
 
 <template>
     <DefaultLayout>
+        <template #header>
+            <nav>
+                <div class="header">
+                    <div class="header__left">
+                        <a href="/">
+                            <MyIcon name="" />
+                        </a>
+                        <a href="/add" class="header__left--link">Création</a>
+                    </div>
+                    <div class="header__right">
+                        <a href="/panier">
+                            <MyIcon name="panier" />
+                        </a>
+                        <a href="/login">
+                            <MyIcon name="profil" />
+                        </a>
+                    </div>
+                </div>
+            </nav>
+        </template>
+
+
         <h1>Détails de la Montre</h1>
         {{ montre.form_montre }} - {{ montre.boitier_fond }} - {{ montre.bracelet_texture }} - {{ montre.montre_prix }}€
         <ThreeJs :fond="updatedMontre.boitier_fond" :boitier="updatedMontre.form_montre"
