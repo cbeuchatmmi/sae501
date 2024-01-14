@@ -239,8 +239,8 @@ onUpdated(() => {
 
 <style lang="scss" scoped>
 .test {
-    height: rem(500);
-    width: rem(500);
+    height: rem(250);
+    width: rem(250);
 }
 
 /* Ajoutez du style si nécessaire */
