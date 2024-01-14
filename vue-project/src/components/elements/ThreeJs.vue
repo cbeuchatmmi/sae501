@@ -233,14 +233,18 @@ onUpdated(() => {
 
 <template>
     <div ref="test" class="test">
-        <canvas ref="canvas" :ref="canvasRef" />
+        <canvas ref="canvas" />
     </div>
 </template>
 
 <style lang="scss" scoped>
 .test {
-    height: rem(250);
-    width: rem(250);
+    position: relative;
+
+
+
+    height: rem(300);
+    width: rem(300);
 }
 
 /* Ajoutez du style si nécessaire */

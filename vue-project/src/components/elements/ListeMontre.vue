@@ -163,8 +163,8 @@ const updatePanierValue = async (idMontre, newValue) => {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
     background-color: $light-black;
-    height: 100vh;
-    width: 100vw;
+    width: 100%;
+    height: 100%;
 
     &__card {
         margin: rem(64);
