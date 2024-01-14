@@ -1,6 +1,5 @@
 <script setup>
-import DefaultLayout from '@/components/layouts/DefaultLayout.vue';
-import ThreeJs from './ThreeJs.vue';
+import ThreeJs from './threeJs.vue';
 import { ref, onMounted, computed } from 'vue';
 import axios from 'axios';
 
@@ -60,58 +59,54 @@ const updatePanierValue = async (idMontre, newValue) => {
 </script>
 
 <template>
-    <DefaultLayout>
-        <h1>Liste des Montres</h1>
+    <h1>Liste des Montres</h1>
 
-        <!-- Filter Controls -->
-        <div class="filters">
-            <label for="priceFilter">Filtrer par prix:</label>
-            <select v-model="priceFilter" @change="applyFilters">
-                <option value="">Tous</option>
-                <option v-for="price in uniquePrices" :key="price" :value="price">{{ price }}€</option>
-            </select>
+    <!-- Filter Controls -->
+    <div class="filters">
+        <label for="priceFilter">Filtrer par prix:</label>
+        <select v-model="priceFilter" @change="applyFilters">
+            <option value="">Tous</option>
+            <option v-for="price in uniquePrices" :key="price" :value="price">{{ price }}€</option>
+        </select>
 
-            <label for="braceletTextureFilter">Filtrer par texture de bracelet:</label>
-            <select v-model="braceletTextureFilter" @change="applyFilters">
-                <option value="">Tous</option>
-                <option v-for="texture in uniqueBraceletTextures" :key="texture" :value="texture">{{ texture }}</option>
-            </select>
+        <label for="braceletTextureFilter">Filtrer par texture de bracelet:</label>
+        <select v-model="braceletTextureFilter" @change="applyFilters">
+            <option value="">Tous</option>
+            <option v-for="texture in uniqueBraceletTextures" :key="texture" :value="texture">{{ texture }}</option>
+        </select>
 
-            <label for="boitierFondFilter">Filtrer par fond de boitier:</label>
-            <select v-model="boitierFondFilter" @change="applyFilters">
-                <option value="">Tous</option>
-                <option v-for="fond in uniqueBoitierFonds" :key="fond" :value="fond">{{ fond }}</option>
-            </select>
+        <label for="boitierFondFilter">Filtrer par fond de boitier:</label>
+        <select v-model="boitierFondFilter" @change="applyFilters">
+            <option value="">Tous</option>
+            <option v-for="fond in uniqueBoitierFonds" :key="fond" :value="fond">{{ fond }}</option>
+        </select>
 
-            <label for="formMontreFilter">Filtrer par forme de montre:</label>
-            <select v-model="formMontreFilter" @change="applyFilters">
-                <option value="">Tous</option>
-                <option value="carre">Carre</option>
-                <option value="rond">Rond</option>
-            </select>
+        <label for="formMontreFilter">Filtrer par forme de montre:</label>
+        <select v-model="formMontreFilter" @change="applyFilters">
+            <option value="">Tous</option>
+            <option value="carre">Carre</option>
+            <option value="rond">Rond</option>
+        </select>
+    </div>
+
+    <!-- Montre List -->
+    <div class="three">
+        <div v-for="montre in filteredMontres" :key="montre.id_montre">
+            <router-link :to="{ name: 'montre-detail', params: { id: montre.id_montre } }">
+                <div>
+                    {{ montre.form_montre }} - {{ montre.boitier_fond }} - {{ montre.bracelet_texture }} - {{
+                        montre.montre_prix }}€
+                    <ThreeJs :fond="montre.boitier_fond" :boitier="montre.form_montre"
+                        :bracelet="montre.bracelet_texture" />
+                </div>
+            </router-link>
+
+            <!-- Ajouter un bouton pour mettre à jour la valeur du panier -->
+            <button @click="updatePanierValue(montre.id_montre, !montre.panier)">
+                {{ montre.panier ? 'Retirer du panier' : 'Ajouter au panier' }}
+            </button>
         </div>
-
-        <!-- Montre List -->
-        <div class="three">
-            <div v-for="montre in filteredMontres" :key="montre.id_montre">
-                <router-link :to="{ name: 'montre-detail', params: { id: montre.id_montre } }">
-                    <div>
-                        {{ montre.form_montre }} - {{ montre.boitier_fond }} - {{ montre.bracelet_texture }} - {{
-                            montre.montre_prix }}€
-                        <ThreeJs :fond="montre.boitier_fond" :boitier="montre.form_montre"
-                            :bracelet="montre.bracelet_texture" />
-                    </div>
-                </router-link>
-
-                <!-- Ajouter un bouton pour mettre à jour la valeur du panier -->
-                <button @click="updatePanierValue(montre.id_montre, !montre.panier)">
-                    {{ montre.panier ? 'Retirer du panier' : 'Ajouter au panier' }}
-                </button>
-            </div>
-        </div>
-
-        <template #footer> Nouveau Footer </template>
-    </DefaultLayout>
+    </div>
 </template>
 <style scoped>
 .three {

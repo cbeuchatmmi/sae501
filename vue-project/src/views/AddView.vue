@@ -1,5 +1,4 @@
 <script setup>
-import DefaultLayout from '@/components/layouts/DefaultLayout.vue';
 import AddMontre from '../components/elements/AddMontre.vue';
 import MyIcon from '../components/elements/MyIcon.vue';
 
@@ -9,36 +8,34 @@ import MyIcon from '../components/elements/MyIcon.vue';
 
 
 <template>
-    <DefaultLayout>
-        <template #header>
-            <nav>
-                <div class="header">
-                    <div class="header__left">
-                        <a href="/">
-                            <MyIcon name="" />
-                        </a>
-                        <a href="/add" class="header__left--link">Création</a>
-                    </div>
-                    <div class="header__right">
-                        <a href="/panier">
-                            <MyIcon name="panier" />
-                        </a>
-                        <a href="/login">
-                            <MyIcon name="profil" />
-                        </a>
-                    </div>
+    <template>
+        <nav>
+            <div class="header">
+                <div class="header__left">
+                    <a href="/">
+                        <MyIcon name="" />
+                    </a>
+                    <a href="/add" class="header__left--link">Création</a>
                 </div>
-            </nav>
-        </template>
+                <div class="header__right">
+                    <a href="/panier">
+                        <MyIcon name="panier" />
+                    </a>
+                    <a href="/login">
+                        <MyIcon name="profil" />
+                    </a>
+                </div>
+            </div>
+        </nav>
+    </template>
 
 
-        <AddMontre />
+    <AddMontre />
 
 
-        <template #footer>
-            <p>salut</p>
-        </template>
-    </DefaultLayout>
+    <template>
+        <p>salut</p>
+    </template>
 </template>
 <style lang="scss">
 /* Ajoutez du style si nécessaire */

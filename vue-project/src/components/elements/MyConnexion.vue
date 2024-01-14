@@ -1,5 +1,4 @@
 <script setup>
-import DefaultLayout from '@/components/layouts/DefaultLayout.vue';
 import { ref } from 'vue';
 import axios from 'axios';
 
@@ -56,37 +55,22 @@ const logout = () => {
 </script>
 
 <template>
-    <DefaultLayout>
-        <template #header>
-            <nav>
-                <ul>
-                    <li><a href="/three">three</a></li>
-                    <li><a href="/about">about</a></li>
-                    <li><a href="/contact">contact</a></li>
-                </ul>
-            </nav>
-        </template>
+    <div>
+        <h2>Connexion</h2>
+        <form @submit.prevent="login">
+            <label for="user_email">Email:</label>
+            <input v-model="loginData.user_email" type="email" required>
 
-        <div>
-            <h2>Connexion</h2>
-            <form @submit.prevent="login">
-                <label for="user_email">Email:</label>
-                <input v-model="loginData.user_email" type="email" required>
+            <label for="user_password">Mot de passe:</label>
+            <input v-model="loginData.user_password" type="password" required>
 
-                <label for="user_password">Mot de passe:</label>
-                <input v-model="loginData.user_password" type="password" required>
-
-                <!-- Affichage du statut de connexion -->
-                <p v-if="userId">Utilisateur connecté! <button @click="logout">Se déconnecter</button></p>
-                <p v-else>Veuillez vous connecter.
-                    <button type="submit">Se connecter</button>
-                </p>
-            </form>
-        </div>
-
-
-        <template #footer> Nouveau Footer </template>
-    </DefaultLayout>
+            <!-- Affichage du statut de connexion -->
+            <p v-if="userId">Utilisateur connecté! <button @click="logout">Se déconnecter</button></p>
+            <p v-else>Veuillez vous connecter.
+                <button type="submit">Se connecter</button>
+            </p>
+        </form>
+    </div>
 </template>
 
 <style></style>

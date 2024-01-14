@@ -1,6 +1,5 @@
 <script setup>
 import MyIcon from '../components/elements/MyIcon.vue';
-import DefaultLayout from '@/components/layouts/DefaultLayout.vue';
 
 import { ref, onMounted } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
@@ -93,67 +92,65 @@ onMounted(() => {
 </script>
 
 <template>
-    <DefaultLayout>
-        <template #header>
-            <nav>
-                <div class="header">
-                    <div class="header__left">
-                        <a href="/">
-                            <MyIcon name="" />
-                        </a>
-                        <a href="/add" class="header__left--link">Création</a>
-                    </div>
-                    <div class="header__right">
-                        <a href="/panier">
-                            <MyIcon name="panier" />
-                        </a>
-                        <a href="/login">
-                            <MyIcon name="profil" />
-                        </a>
-                    </div>
+    <template>
+        <nav>
+            <div class="header">
+                <div class="header__left">
+                    <a href="/">
+                        <MyIcon name="" />
+                    </a>
+                    <a href="/add" class="header__left--link">Création</a>
                 </div>
-            </nav>
-        </template>
+                <div class="header__right">
+                    <a href="/panier">
+                        <MyIcon name="panier" />
+                    </a>
+                    <a href="/login">
+                        <MyIcon name="profil" />
+                    </a>
+                </div>
+            </div>
+        </nav>
+    </template>
 
 
-        <h1>Détails de la Montre</h1>
-        {{ montre.form_montre }} - {{ montre.boitier_fond }} - {{ montre.bracelet_texture }} - {{ montre.montre_prix }}€
-        <ThreeJs :fond="updatedMontre.boitier_fond" :boitier="updatedMontre.form_montre"
-            :bracelet="updatedMontre.bracelet_texture" />
-        <button @click="deleteMontre">Supprimer la Montre</button>
+    <h1>Détails de la Montre</h1>
+    {{ montre.form_montre }} - {{ montre.boitier_fond }} - {{ montre.bracelet_texture }} - {{ montre.montre_prix }}€
+    <ThreeJs :fond="updatedMontre.boitier_fond" :boitier="updatedMontre.form_montre"
+        :bracelet="updatedMontre.bracelet_texture" />
+    <button @click="deleteMontre">Supprimer la Montre</button>
 
 
-        <div>
-            <h1>Modifier la Montre</h1>
-            <form @submit.prevent="updateMontre">
-                <label for="form_montre">Forme de la Montre:</label>
-                <select v-model="updatedMontre.form_montre" required>
-                    <option value="carre">Carre</option>
-                    <option value="rond">Rond</option>
-                </select>
+    <div>
+        <h1>Modifier la Montre</h1>
+        <form @submit.prevent="updateMontre">
+            <label for="form_montre">Forme de la Montre:</label>
+            <select v-model="updatedMontre.form_montre" required>
+                <option value="carre">Carre</option>
+                <option value="rond">Rond</option>
+            </select>
 
-                <label for="boitier_fond">Boîtier de Fond:</label>
-                <select v-model="updatedMontre.boitier_fond" required>
-                    <!-- Options dynamiques à partir des données récupérées précédemment -->
-                    <option v-for="boitier in boitiers" :value="boitier.boitier_fond" :key="boitier.id_boitier">
-                        {{ boitier.boitier_fond }}
-                    </option>
-                </select>
+            <label for="boitier_fond">Boîtier de Fond:</label>
+            <select v-model="updatedMontre.boitier_fond" required>
+                <!-- Options dynamiques à partir des données récupérées précédemment -->
+                <option v-for="boitier in boitiers" :value="boitier.boitier_fond" :key="boitier.id_boitier">
+                    {{ boitier.boitier_fond }}
+                </option>
+            </select>
 
-                <label for="bracelet_texture">Texture du Bracelet:</label>
-                <select v-model="updatedMontre.bracelet_texture" required>
-                    <!-- Options dynamiques à partir des données récupérées précédemment -->
-                    <option v-for="bracelet in bracelets" :value="bracelet.bracelet_texture" :key="bracelet.id_bracelet">
-                        {{ bracelet.bracelet_texture }}
-                    </option>
-                </select>
+            <label for="bracelet_texture">Texture du Bracelet:</label>
+            <select v-model="updatedMontre.bracelet_texture" required>
+                <!-- Options dynamiques à partir des données récupérées précédemment -->
+                <option v-for="bracelet in bracelets" :value="bracelet.bracelet_texture" :key="bracelet.id_bracelet">
+                    {{ bracelet.bracelet_texture }}
+                </option>
+            </select>
 
-                <label for="panier">Ajouter au Panier:</label>
-                <input type="checkbox" v-model="updatedMontre.panier" />
+            <label for="panier">Ajouter au Panier:</label>
+            <input type="checkbox" v-model="updatedMontre.panier" />
 
-                <button type="submit">Modifier</button>
-            </form>
-        </div>
-        <template #footer> Nouveau Footer </template>
-    </DefaultLayout>
+            <button type="submit">Modifier</button>
+        </form>
+    </div>
+    <template> Nouveau Footer </template>
 </template>
