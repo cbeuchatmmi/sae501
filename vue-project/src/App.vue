@@ -1,5 +1,20 @@
 <script setup>
 import MyIcon from './components/elements/MyIcon.vue'
+import { onMounted } from 'vue';
+import { useRoute, useRouter } from 'vue-router';
+
+onMounted(() => {
+  const router = useRouter();
+  const route = useRoute();
+
+  // Récupérer userId depuis le stockage local
+  const userId = localStorage.getItem('userId');
+
+  // Si userId n'est pas défini et l'utilisateur n'est pas déjà sur la page de connexion, redirigez-le
+  if (!userId && route.path !== '/login') {
+    router.push('/login');
+  }
+});
 </script>
 
 <template>
