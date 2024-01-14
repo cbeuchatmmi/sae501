@@ -92,65 +92,144 @@ onMounted(() => {
 </script>
 
 <template>
-    <template>
-        <nav>
-            <div class="header">
-                <div class="header__left">
-                    <a href="/">
-                        <MyIcon name="" />
-                    </a>
-                    <a href="/add" class="header__left--link">Création</a>
-                </div>
-                <div class="header__right">
-                    <a href="/panier">
-                        <MyIcon name="panier" />
-                    </a>
-                    <a href="/login">
-                        <MyIcon name="profil" />
-                    </a>
-                </div>
+    <div class="grid">
+        <div class="montre">
+            <h1 class="montre__title">Détails de la Montre</h1>
+            <div class="montre__info">
+                <p class="montre__info--content">Forme du boitier</p>
+                {{ montre.form_montre }}
+                <p class="montre__info--content">Fond du boitier</p>
+                {{ montre.boitier_fond }}
+                <p class="montre__info--content">Texture du bracelet</p>
+                {{ montre.bracelet_texture }}
+                <p class="montre__info--content">Prix de la montre</p>
+                {{ montre.montre_prix }}€
             </div>
-        </nav>
-    </template>
+            <button class="montre__button" @click="deleteMontre">Supprimer la Montre</button>
+            <form class="form" @submit.prevent="updateMontre">
+                <h2 class="form__title">Créer une montre</h2>
+                <div class="form__content">
+                    <label class="form__content--label" for="form_montre">Forme de la Montre:</label>
+                    <select class="form__content--select" v-model="updatedMontre.form_montre" required>
+                        <option class="form__content--select--option" value="carre">Carre</option>
+                        <option class="form__content--select--option" value="rond">Rond</option>
+                    </select>
+                </div>
+                <div class="form__content">
+                    <label class="form__content--label" for="boitier_fond">Boîtier de Fond:</label>
+                    <select class="form__content--select" v-model="updatedMontre.boitier_fond" required>
+                        <option class="form__content--select--option" v-for="boitier in boitiers"
+                            :value="boitier.boitier_fond" :key="boitier.id_boitier">
+                            {{ boitier.boitier_fond }}
+                        </option>
+                    </select>
+                </div>
+                <div class="form__content">
+                    <label class="form__content--label" for="bracelet_texture">Texture du Bracelet:</label>
+                    <select class="form__content--select" v-model="updatedMontre.bracelet_texture" required>
+                        <!-- Options dynamiques à partir des données récupérées précédemment -->
+                        <option class="form__content--select--option" v-for="bracelet in bracelets"
+                            :value="bracelet.bracelet_texture" :key="bracelet.id_bracelet">
+                            {{ bracelet.bracelet_texture }}
+                        </option>
+                    </select>
+                </div>
+                <div class="form__content">
+                    <label class="form__content--label" for="panier">Ajouter au Panier:
+                        <input class="form__content--checkbox" type="checkbox" v-model="updatedMontre.panier" />
+                    </label>
+                </div>
 
-
-    <h1>Détails de la Montre</h1>
-    {{ montre.form_montre }} - {{ montre.boitier_fond }} - {{ montre.bracelet_texture }} - {{ montre.montre_prix }}€
-    <ThreeJs :fond="updatedMontre.boitier_fond" :boitier="updatedMontre.form_montre"
-        :bracelet="updatedMontre.bracelet_texture" />
-    <button @click="deleteMontre">Supprimer la Montre</button>
-
-
-    <div>
-        <h1>Modifier la Montre</h1>
-        <form @submit.prevent="updateMontre">
-            <label for="form_montre">Forme de la Montre:</label>
-            <select v-model="updatedMontre.form_montre" required>
-                <option value="carre">Carre</option>
-                <option value="rond">Rond</option>
-            </select>
-
-            <label for="boitier_fond">Boîtier de Fond:</label>
-            <select v-model="updatedMontre.boitier_fond" required>
-                <!-- Options dynamiques à partir des données récupérées précédemment -->
-                <option v-for="boitier in boitiers" :value="boitier.boitier_fond" :key="boitier.id_boitier">
-                    {{ boitier.boitier_fond }}
-                </option>
-            </select>
-
-            <label for="bracelet_texture">Texture du Bracelet:</label>
-            <select v-model="updatedMontre.bracelet_texture" required>
-                <!-- Options dynamiques à partir des données récupérées précédemment -->
-                <option v-for="bracelet in bracelets" :value="bracelet.bracelet_texture" :key="bracelet.id_bracelet">
-                    {{ bracelet.bracelet_texture }}
-                </option>
-            </select>
-
-            <label for="panier">Ajouter au Panier:</label>
-            <input type="checkbox" v-model="updatedMontre.panier" />
-
-            <button type="submit">Modifier</button>
-        </form>
+                <button class="form__button" type="submit">Modifier</button>
+            </form>
+        </div>
+        <ThreeJs :fond="updatedMontre.boitier_fond" :boitier="updatedMontre.form_montre"
+            :bracelet="updatedMontre.bracelet_texture" />
     </div>
-    <template> Nouveau Footer </template>
 </template>
+
+<style lang="scss">
+.grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    justify-items: center;
+    align-items: center;
+    background-color: $light-black;
+    color: $secondary-color ;
+}
+
+.montre {
+    &__title {
+        font-size: $h2;
+        color: $secondary-color;
+    }
+
+    &__info {
+        &--content {
+            font-size: $body;
+            font-weight: bold;
+        }
+    }
+
+    &__button {
+        background: none;
+        border: none;
+        border-radius: rem(16);
+        background-color: $primary-color;
+        padding: rem(20);
+        font-size: $button;
+        cursor: pointer;
+    }
+
+}
+
+.form {
+    background-color: $light-black;
+    width: 100%;
+    height: 100%;
+
+    display: flex;
+    flex-direction: column;
+    justify-items: left;
+    align-items: left;
+
+    &__title {
+        font-size: $h2;
+        color: $secondary-color;
+    }
+
+    &__content {
+
+        &--label {
+            color: $secondary-color;
+        }
+
+        &--select {
+            width: rem(200);
+            margin: rem(20);
+            background-color: $white;
+            border: none;
+            border: rem(2) solid $secondary-color ;
+            border-radius: rem(16);
+            padding: rem(16);
+
+            &--option {}
+        }
+
+        &__checkbox {
+            align-items: left;
+        }
+    }
+
+
+    &__button {
+        background: none;
+        border: none;
+        border-radius: rem(16);
+        background-color: $primary-color;
+        padding: rem(20);
+        font-size: $button;
+        cursor: pointer;
+    }
+}
+</style>
