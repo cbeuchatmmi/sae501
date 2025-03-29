@@ -29,7 +29,6 @@ const toggleAddUser = () => {
 
 <style lang="scss">
 .login {
-    background-color: $light-black;
     display: flex;
     flex-direction: column;
     align-items: center;

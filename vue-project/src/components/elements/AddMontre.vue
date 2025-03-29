@@ -125,19 +125,16 @@ watch(() => newMontre.value.panier, (newVal) => {
 
 
 <style lang="scss" scoped>
-/* Ajoutez du style si nécessaire */
 .add {
-    display: grid;
-    grid-template-columns: auto auto;
-    justify-items: center;
-    align-items: center;
-    height: 100vh;
-
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  justify-items: center;
+  align-items: center;
 }
 
 .three {
-    width: rem(200);
-    height: rem(200);
+  width: 100%; 
+  height: 100%; 
 }
 
 .form {

@@ -246,13 +246,14 @@ onUpdated(() => {
 
 <style lang="scss" scoped>
 .test {
-    position: relative;
-
-
-
-    height: rem(300);
-    width: rem(300);
+  position: relative;
+  width: 100%; 
+  height: 100%; 
 }
 
-/* Ajoutez du style si nécessaire */
+canvas {
+  display: block;
+  width: 100%; 
+  height: 100%; 
+}
 </style>

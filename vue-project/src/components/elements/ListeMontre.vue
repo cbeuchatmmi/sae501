@@ -60,10 +60,15 @@ const applyFilters = () => {
     // Vous pouvez ajouter une logique supplémentaire ici si nécessaire
 };
 
-// Fonction pour augmenter la limite d'affichage
-const showAllMontres = () => {
-    limit.value = montres.value.length;
+const toggleMontresDisplay = () => {
+    if (limit.value === montres.value.length) {
+        limit.value = 10; // Réinitialise à la limite initiale
+    } else {
+        limit.value = montres.value.length; // Affiche toutes les montres
+    }
 };
+const allMontresDisplayed = computed(() => limit.value === montres.value.length);
+
 
 // Fonction pour mettre à jour la valeur du panier
 const updatePanierValue = async (idMontre, newValue) => {
@@ -82,6 +87,7 @@ const updatePanierValue = async (idMontre, newValue) => {
         console.error('Erreur lors de la mise à jour du panier de la montre:', error.message);
     }
 };
+
 </script>
 
 <template>
@@ -135,25 +141,30 @@ const updatePanierValue = async (idMontre, newValue) => {
 
             <!-- Ajouter un bouton pour mettre à jour la valeur du panier -->
             <button @click="updatePanierValue(montre.id_montre, !montre.panier)" class="three__card--button">
-                {{ montre.panier ? 'delete' : 'add' }}
+                {{ montre.panier ? 'Supprimer' : 'Ajouter' }}
             </button>
         </div>
-    </div>
 
-    <!-- Bouton pour afficher toutes les montres -->
-    <button @click="showAllMontres" class="show-all-button">
-        Afficher toutes les montres
-    </button>
+    </div>
+        <!-- Bouton pour afficher toutes les montres -->
+        <button @click="toggleMontresDisplay" class="show-all-button">
+            {{ allMontresDisplayed ? 'Réduire le nombre de montres' : 'Afficher toutes les montres' }}
+        </button>
 </template>
 <style lang="scss" scoped>
 .title {
     font-size: $h1;
     color: $secondary-color;
+    text-align: center;
+    padding-bottom: rem(20); 
 }
 
 .filters {
+    
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr 1fr;
+    grid-template-columns: repeat(4, 1fr);
+    gap: rem(16);
+    padding: rem(20); 
 
     &__label {
         color: $primary-color;
@@ -162,11 +173,12 @@ const updatePanierValue = async (idMontre, newValue) => {
 
     &__select {
         background: none;
-        border: none;
-        border-color: rem(2) solid $primary-color;
+        border: rem(2) solid $primary-color;
         background-color: $white;
         color: $light-black;
         font-size: $body;
+        padding: rem(8);
+        border-radius: rem(8);
 
         &--value {
             background-color: $white;
@@ -176,43 +188,62 @@ const updatePanierValue = async (idMontre, newValue) => {
     }
 }
 
-
 .three {
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
-    background-color: $light-black;
-    width: 100%;
-    height: 100%;
+    grid-template-columns: repeat(3, 1fr);
+    gap: rem(32);
+    padding: rem(20);
+    padding-bottom: rem(60);
 
     &__card {
-        margin: rem(64);
+        background-color: $light-black;
+        border-radius: rem(16);
+        box-shadow: 0 rem(4) rem(8) rgba(0, 0, 0, 0.1);
+        padding: rem(16); /* Remplace margin par padding */
         display: flex;
         flex-direction: column;
         align-items: center;
-        justify-items: center;
+        justify-content: space-between;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+
+        &:hover {
+            transform: scale(1.05);
+            box-shadow: 0 rem(8) rem(16) rgba(0, 0, 0, 0.2);
+        }
 
         &--button {
-            background: none;
-            background-color: $primary-color;
+            background-color: $secondary-color;
             color: $white;
             font-size: $button;
             border: none;
             border-radius: rem(16);
-            padding: rem(6);
-            margin-top: rem(16);
+            padding: rem(8);
+            margin-top: rem(16); /* Garde margin-top pour espacer le bouton */
             cursor: pointer;
+            transition: background-color 0.3s ease;
+
+            &:hover {
+                background-color: darken($primary-color, 10%);
+            }
         }
     }
 }
 
 .show-all-button {
-    margin: rem(20);
+    padding: rem(12); 
+    display: block; 
     background-color: $primary-color;
     color: $white;
     font-size: $button;
     border: none;
     border-radius: rem(16);
-    padding: rem(10);
     cursor: pointer;
+    transition: background-color 0.3s ease;
+    margin: rem(20) auto; 
+    text-align: center;
+
+    &:hover {
+        background-color: darken($primary-color, 10%);
+    }
 }
 </style>

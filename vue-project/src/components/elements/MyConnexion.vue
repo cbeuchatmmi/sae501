@@ -80,7 +80,6 @@ const logout = () => {
     flex-direction: column;
     align-items: center;
     justify-items: center;
-    background-color: $light-black;
 
 
     &__title {

@@ -7,10 +7,10 @@ import ListeMontre from '../components/elements/ListeMontre.vue';
     <ListeMontre />
   </div>
 </template>
-
 <style lang="scss">
 .liste {
-  height: 100vh;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
 }
 </style>
-

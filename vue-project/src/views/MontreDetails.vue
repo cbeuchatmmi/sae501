@@ -94,8 +94,8 @@ onMounted(() => {
 <template>
     <div class="grid">
         <div class="montre">
-            <h1 class="montre__title">Détails de la Montre</h1>
             <div class="montre__info">
+                <h1 class="montre__title">Détails de la Montre</h1>
                 <p class="montre__info--content">Forme du boitier</p>
                 {{ montre.form_montre }}
                 <p class="montre__info--content">Fond du boitier</p>
@@ -107,19 +107,18 @@ onMounted(() => {
             </div>
             <button class="montre__button" @click="deleteMontre">Supprimer la Montre</button>
             <form class="form" @submit.prevent="updateMontre">
-                <h2 class="form__title">Créer une montre</h2>
+                <h2 class="form__title">Modifier une montre</h2>
                 <div class="form__content">
                     <label class="form__content--label" for="form_montre">Forme de la Montre:</label>
                     <select class="form__content--select" v-model="updatedMontre.form_montre" required>
-                        <option class="form__content--select--option" value="carre">Carre</option>
+                        <option class="form__content--select--option" value="carre">Carré</option>
                         <option class="form__content--select--option" value="rond">Rond</option>
                     </select>
                 </div>
                 <div class="form__content">
                     <label class="form__content--label" for="boitier_fond">Boîtier de Fond:</label>
                     <select class="form__content--select" v-model="updatedMontre.boitier_fond" required>
-                        <option class="form__content--select--option" v-for="boitier in boitiers"
-                            :value="boitier.boitier_fond" :key="boitier.id_boitier">
+                        <option class="form__content--select--option" v-for="boitier in boitiers" :value="boitier.boitier_fond" :key="boitier.id_boitier">
                             {{ boitier.boitier_fond }}
                         </option>
                     </select>
@@ -127,47 +126,71 @@ onMounted(() => {
                 <div class="form__content">
                     <label class="form__content--label" for="bracelet_texture">Texture du Bracelet:</label>
                     <select class="form__content--select" v-model="updatedMontre.bracelet_texture" required>
-                        <!-- Options dynamiques à partir des données récupérées précédemment -->
-                        <option class="form__content--select--option" v-for="bracelet in bracelets"
-                            :value="bracelet.bracelet_texture" :key="bracelet.id_bracelet">
+                        <option class="form__content--select--option" v-for="bracelet in bracelets" :value="bracelet.bracelet_texture" :key="bracelet.id_bracelet">
                             {{ bracelet.bracelet_texture }}
                         </option>
                     </select>
                 </div>
                 <div class="form__content">
-                    <label class="form__content--label" for="panier">Ajouter au Panier:
-                        <input class="form__content--checkbox" type="checkbox" v-model="updatedMontre.panier" />
-                    </label>
+                    <label class="form__content--label" for="panier">Ajouter au Panier:</label>
+                    <input class="form__content--checkbox" type="checkbox" v-model="updatedMontre.panier" />
                 </div>
-
                 <button class="form__button" type="submit">Modifier</button>
             </form>
         </div>
-        <ThreeJs :fond="updatedMontre.boitier_fond" :boitier="updatedMontre.form_montre"
+        <div class="three">
+            <ThreeJs :fond="updatedMontre.boitier_fond" :boitier="updatedMontre.form_montre"
             :bracelet="updatedMontre.bracelet_texture" />
+        </div>
     </div>
 </template>
 
 <style lang="scss">
-.grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    justify-items: center;
-    align-items: center;
-    background-color: $light-black;
-    color: $secondary-color ;
+.three {
+  width: 100%; 
+  height: 100%; 
 }
-
+.grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr; 
+  justify-items: center;
+  align-items: center;
+  height: 100vh; 
+}
 .montre {
+    
     &__title {
         font-size: $h2;
         color: $secondary-color;
+        text-align: center;
+        margin-bottom: rem(16);
     }
-
     &__info {
+        background-color: $light-black;
+        padding: rem(24);
+        border-radius: rem(16);
+        box-shadow: 0 rem(4) rem(8) rgba(0, 0, 0, 0.2);
+        width: 100%;
+        max-width: rem(500); 
+        margin: rem(20) auto; 
+        color: $secondary-color;
+        display: flex;
+        flex-direction: column;
+        gap: rem(12);
+
         &--content {
             font-size: $body;
             font-weight: bold;
+            color: $white;
+            margin-bottom: rem(8);
+        }
+
+     
+        span {
+            font-size: $body;
+            font-weight: normal;
+            color: $secondary-color;
+            margin-bottom: rem(16);
         }
     }
 
@@ -176,60 +199,84 @@ onMounted(() => {
         border: none;
         border-radius: rem(16);
         background-color: $primary-color;
-        padding: rem(20);
+        padding: rem(12);
         font-size: $button;
+        font-weight: bold;
+        color: $white;
         cursor: pointer;
+        transition: background-color 0.3s ease;
+
+        &:hover {
+            background-color: darken($primary-color, 10%);
+        }
     }
-
 }
-
 .form {
     background-color: $light-black;
+    padding: rem(32);
+    border-radius: rem(16); 
+    box-shadow: 0 rem(4) rem(8) rgba(0, 0, 0, 0.2); 
     width: 100%;
-    height: 100%;
+    max-width: rem(500); 
+    margin: rem(20) auto; 
 
     display: flex;
     flex-direction: column;
-    justify-items: left;
-    align-items: left;
+    gap: rem(16);
 
     &__title {
         font-size: $h2;
         color: $secondary-color;
+        text-align: center;
+        margin-bottom: rem(16);
     }
 
     &__content {
+        display: flex;
+        flex-direction: column;
+        gap: rem(8);
 
         &--label {
-            color: $secondary-color;
+            color: $white;
+            font-size: $body;
+            font-weight: bold;
         }
 
         &--select {
-            width: rem(200);
-            margin: rem(20);
+            width: 100%;
             background-color: $white;
-            border: none;
-            border: rem(2) solid $secondary-color ;
-            border-radius: rem(16);
-            padding: rem(16);
+            border: rem(2) solid $secondary-color;
+            border-radius: rem(8);
+            padding: rem(12);
+            font-size: $body;
+            color: $light-black;
 
-            &--option {}
+            &:focus {
+                outline: none;
+                border-color: darken($secondary-color, 10%);
+            }
         }
 
-        &__checkbox {
-            align-items: left;
+        &--checkbox {
+            align-self: flex-start;
+            margin-top: rem(8);
         }
     }
 
-
     &__button {
-        background: none;
-        border: none;
-        border-radius: rem(16);
         background-color: $primary-color;
-        padding: rem(20);
+        color: $white;
+        border: none;
+        border-radius: rem(8);
+        padding: rem(12);
         font-size: $button;
+        font-weight: bold;
         cursor: pointer;
+        transition: background-color 0.3s ease;
+
+        &:hover {
+            background-color: darken($primary-color, 10%);
+        }
     }
 }
 </style>
