@@ -1,5 +1,5 @@
 <script setup>
-import ThreeJs from './threeJs.vue';
+import ThreeJs from './ThreeJs.vue';
 import { ref, onMounted, computed } from 'vue';
 import axios from 'axios';
 
