@@ -2,7 +2,7 @@
 <script setup>
 import { ref, onMounted, watch } from 'vue';
 import axios from 'axios';
-import ThreeJs from './threejs.vue';
+import ThreeJs from '../elements/ThreeJs.vue';
 
 const montres = ref([]);
 const bracelets = ref([]);

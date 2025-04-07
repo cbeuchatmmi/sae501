@@ -1,7 +1,7 @@
 <script setup>
 import { ref, onMounted, computed } from 'vue';
 import axios from 'axios';
-import Threejs from './threejs.vue';
+import Threejs from '../elements/ThreeJs.vue';
 
 const montres = ref([]);
 
