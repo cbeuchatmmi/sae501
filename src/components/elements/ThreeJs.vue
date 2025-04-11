@@ -52,9 +52,9 @@ const initScene = () => {
     camera.position.z = 0.25; // Augmentez la valeur pour déplacer la caméra plus loin de l'objet
 
 
-    // scene.background = new THREE.Color(0x0000ff);
-    const backgroundTexture = new THREE.TextureLoader().load('/images/background.jpg');
-    scene.background = backgroundTexture;
+    scene.background = new THREE.Color(0x0000ff);
+    // const backgroundTexture = new THREE.TextureLoader().load('/images/background.jpg');
+    // scene.background = backgroundTexture;
 
     // Ajout de la lumière ambiante
     const ambientLight = new THREE.AmbientLight(0xffffff, 0.5); // Couleur, Intensité
