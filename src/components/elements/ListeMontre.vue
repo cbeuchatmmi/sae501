@@ -98,7 +98,7 @@ const updatePanierValue = async (idMontre, newValue) => {
         <div>
             <label class="filters__label" for="priceFilter">Filtrer par prix:</label>
             <select class="filters__select" v-model="priceFilter" @change="applyFilters">
-                <option class="filters__select--value">Tous</option>
+                <option class="filters__select--value" value="">Tous</option>
                 <option class="filters__select--value" v-for="price in uniquePrices" :key="price" :value="price">{{ price
                 }}€
                 </option>

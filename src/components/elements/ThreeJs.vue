@@ -48,13 +48,10 @@ const initScene = () => {
     scene = new THREE.Scene();
     camera = new THREE.PerspectiveCamera(15, window.innerWidth / window.innerHeight, 0.1, 1000);
     camera.position.y = 0.25;
-    camera.position.x = 0.25; // Augmentez la valeur pour déplacer la caméra plus loin de l'objet
-    camera.position.z = 0.25; // Augmentez la valeur pour déplacer la caméra plus loin de l'objet
+    camera.position.x = 0.25;
+    camera.position.z = 0.25;
 
-
-    scene.background = new THREE.Color(0x0000ff);
-    // const backgroundTexture = new THREE.TextureLoader().load('/images/background.jpg');
-    // scene.background = backgroundTexture;
+    scene.background = new THREE.Color(0x000000); // Fond noir
 
     // Ajout de la lumière ambiante
     const ambientLight = new THREE.AmbientLight(0xffffff, 0.5); // Couleur, Intensité
@@ -62,7 +59,6 @@ const initScene = () => {
 
     // Ajout de la brume
     scene.fog = new THREE.Fog(0x222222, 1, 5); // Couleur, Proche, Loin
-
 
     renderer = new THREE.WebGLRenderer({ canvas: canvas.value });
     renderer.setSize(width, height);
@@ -166,7 +162,7 @@ const onLoaded = (collada) => {
         boitier_rond.visible = true
     }
 
-    const solGeometry = new THREE.CircleGeometry(2, 64);
+    const solGeometry = new THREE.CircleGeometry(1, 64);
     sol = new THREE.Mesh(solGeometry, solMaterial);
     sol.rotation.x = -Math.PI / 2;
     sol.position.y = -0.5;

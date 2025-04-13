@@ -37,11 +37,11 @@ onMounted(() => {
       </div>
     </nav>
     <RouterView />
-    <div class="footer">
+    <!-- <div class="footer">
       <div class="footer__content">
         <p>&copy; 2025 - Tous droits réservés</p>
       </div>
-    </div>
+    </div> -->
   </div>
 </template>
 <style lang="scss">
